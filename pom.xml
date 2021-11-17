@@ -14,7 +14,10 @@
 	<name>m5-spring-jenkins</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -35,7 +38,165 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.9.1</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+
+				</executions>
+
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.15.0</version>
+				<executions>
+					<execution>
+						<id>pmd-check</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>cpd-check</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>cpd-check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<sourceEncoding>UTF-8</sourceEncoding>
+					<inputEncoding>UTF-8</inputEncoding>
+					<outputEncoding>UTF-8</outputEncoding>
+					<targetJdk>17</targetJdk>
+					<printFailingErrors>true</printFailingErrors>
+					<failOnViolation>false</failOnViolation>
+					<includeTests>true</includeTests>
+					<minimumTokens>20</minimumTokens>
+					<includes>
+						<include>**/*.java</include>
+					</includes>
+					<compileSourceRoots>
+						<compileSourceRoot>${basedir}/src/main/java</compileSourceRoot>
+					</compileSourceRoots>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+
+			<!--            Plugin para mostrar los resultados de los tests unitarios en el maven site-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>3.0.0-M5</version>
+			</plugin>
+
+			<!--            Plugin para mostrar la documentación javadoc en el maven site-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<doclint>none</doclint>  <!-- Turnoff all checks -->
+				</configuration>
+			</plugin>
+
+			<!--            Plugin JaCoCo para mostrar el reporte de cobertura en el maven site -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>report</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+
+			<!--            https://maven.apache.org/plugins/maven-checkstyle-plugin/index.html-->
+			<!--            Plugin Checkstyle: https://checkstyle.org/-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.1.2</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>checkstyle</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+
+			<!--            Plugin PMD-->
+			<!--            http://maven.apache.org/plugins/maven-pmd-plugin/index.html-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.15.0</version>
+				<configuration>
+					<linkXRef>true</linkXRef>
+					<rulesets>
+						<ruleset>/category/java/bestpractices.xml</ruleset>
+					</rulesets>
+					<sourceEncoding>UTF-8</sourceEncoding>
+					<inputEncoding>UTF-8</inputEncoding>
+					<outputEncoding>UTF-8</outputEncoding>
+					<targetJdk>17</targetJdk>
+					<printFailingErrors>true</printFailingErrors>
+					<failOnViolation>false</failOnViolation>
+					<includeTests>true</includeTests>
+					<!--                    minimumTokens vale 100 por defecto-->
+					<minimumTokens>20</minimumTokens>
+					<includes>
+						<include>**/*.java</include>
+					</includes>
+					<compileSourceRoots>
+						<compileSourceRoot>${basedir}/src/main/java</compileSourceRoot>
+					</compileSourceRoots>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.4.2.2</version>
+			</plugin>
+
+
+		</plugins>
+	</reporting>
 
 </project>
