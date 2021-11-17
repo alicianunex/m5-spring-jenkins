@@ -31,5 +31,11 @@ pipeline {
                 sh 'mvn site'
             }
         }
+        stage('Sonar'){
+            steps {
+                echo 'Token sonar: ${env.SONAR_M5_SPRING_JENKINS}'
+            }
+        }
+
     }
 }
