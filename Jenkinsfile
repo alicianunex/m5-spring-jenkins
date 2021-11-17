@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Sonar'){
             steps {
-                echo 'Token sonar: ${env.SONAR_M5_SPRING_JENKINS}'
+                sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=m5-spring-jenkins -Dsonar.login=400cd173b9151dbd1f572f6ed78b3ca99578333f -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=alansastre'
             }
         }
 
